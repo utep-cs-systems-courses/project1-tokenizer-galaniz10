@@ -33,10 +33,36 @@ int non_space_char(char c){
 /* Returns a pointer to the first character of the next 
    space-separated word in zero-terminated str.  Return a zero pointer if 
    str does not contain any words. */
-char *word_start(char *str); 
+char *word_start(char *str){
+
+  while(space_char(str+1)){
+
+    for(int i=0; str[i] != '\0'; i++){
+
+      if(space_char(*str)){
+
+	str++;
+	continue;
+      }
+      if(!space_char(*str)){
+      }
+      else
+	str = '\0';
+      return str;
+
+    }
+  }
+} 
 
 /* Returns a pointer terminator char following *word */
-char *word_terminator(char *word);
+char *word_terminator(char *word){
+
+  int i;
+  for(i = 0; *(word+i) != '\0' non_space_char(*(word+i)); i++){
+
+    return word+i;
+  }
+}
 
 /* Counts the number of words in the string argument. */
 int count_words(char *str);
