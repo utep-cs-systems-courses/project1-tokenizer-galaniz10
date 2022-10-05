@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "tokenizer.h"
 
 
 
@@ -23,7 +22,7 @@ int space_char(char c){
    character (not tab or space).  
    Zero terminators are not printable (therefore false) */ 
 int non_space_char(char c){
-  if(!space_char(c) && c != '\0')
+  if(!space_char(c) && c != '\0'){
     return 1;
   }
   return 0;
@@ -51,10 +50,9 @@ char *word_terminator(char *word){
 
     word++;
   }
-  if(*word == '\0'){
 
-    return (word-1);
-  }
+    return word;
+  
 }
 
 /* Counts the number of words in the string argument. */
@@ -65,6 +63,7 @@ int count_words(char *str){
 
     str = word_start(str);
     str = word_terminator(str);
+    count++;
   }
   return count;
 
@@ -77,7 +76,8 @@ char *copy_str(char *inStr, short len){
 
   char *new_str = (char *)malloc(sizeof(char) * (len+1));
 
-  for(int i=0; i < len ; i++ ){
+  int i;
+  for(i=0; i < len ; i++ ){
 
     *(new_str+i) = *(inStr+i);
   }
@@ -94,36 +94,66 @@ char *copy_str(char *inStr, short len){
      tokens[2] = "string" 
      tokens[3] = 0
 */
+
 char **tokenize(char* str){
 
   int len_word = count_words(str);
-  char **tokens = (char**)malloc(len_word+1)*sizeof(char*));
 
-for(int i=0; i<len_word; i++){
+  char **words = (char**)malloc((len_word+1)*sizeof(char*));
 
-  char *s= word_start(str);
+
+int i=0;
+for(i=0; i<len_word; i++){
+
+
+
+  char* s= word_start(str);
+
   str = word_terminator(s);
-  tokens[i] = copy_str(s, str - s);
+
+  words[i] = copy_str(s, str - s);
+
  }
-tokens[i] = '\0';
-return tokens;
+
+words[i] = '\0';
+
+return words;
+
 }
+
 
 /* Prints all tokens. */
+
 void print_tokens(char **tokens){
 
-  for(int i=0; tokens[i] != '\0'; i++){
 
-    printf("\ntoken[%d] %s\n", i,tokens[i]);
+  int i;
+  for(i=0; tokens[i] != 0; i++){
+
+
+
+    printf("\ntoken[%d] : %s\n",i,tokens[i]);
+
   }
+
 }
 
-/* Frees all tokens and the vector containing themx. */
+
+
+/* Frees all tokens and the vector containing them. */
+
 void free_tokens(char **tokens){
 
-  for(int i=0; tokens[i]; != '\0'; i++){
+  char **temp=tokens;
 
-    free(tokens[i]);
+  while(*temp!=NULL);{
+
+    free(*temp);
+
+    temp++;
+
   }
+
   free(tokens);
+
 }
