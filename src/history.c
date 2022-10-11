@@ -14,52 +14,127 @@ List* init_history()
 
   List *history;
 
-  history = (List*)  malloc(sizeof(List));
+  history = NULL;
 
-  history ->root = NULL;
+  history = malloc(sizeof(List));
 
   return history;
 
 }
 
 
+void add_history(List *list, char *str){
 
-void add_history(List* list,char* str)
+  Item * node = (Item*)malloc(sizeof(Item));
 
-{
+  int a = 0;
 
-  Item *new = (Item*) malloc(sizeof(Item));
+  while(str[a] != '\0'){
+
+    a++;
+
+  }
+
+  node->str = copy_str(str,a);
 
 
 
-  if (list->root == NULL){
+  if (list->root == NULL) {
 
-    new->id = 1;
+    list->root = node;
 
-    list->root = new;
+    node->id = 1;
 
   }
 
   else {
 
-    Item *currItem = list->root;
+    Item *temp = list->root;
 
-    while(currItem->next != NULL)
 
-      {
 
-	currItem = currItem->next;
+    while(temp->next != NULL){
 
-      }
+      node->id += 1;
 
-    new->id = currItem->id + 1;
+      temp = temp->next;
 
-    currItem->next = new;
+    }
+
+    temp->next = node;
+
+    node->id += 1;
 
   }
 
-  new->str = str;
+}
 
-  new->next = NULL;
+
+
+char *get_history(List *list, int id){
+
+  Item *node = list->root;
+
+  char *i = " ";
+
+  while(list != NULL){
+
+    if(node->id == id){
+
+      i = node->str;
+
+      return i;
+
+    }
+
+    node = node->next;
+
+  }
+
+  return i;
 
 }
+
+
+
+
+
+void print_history(List *list){
+
+  int i = 1;
+
+  Item *temp = list->root;
+
+  if(list == NULL){
+
+    printf("Its Empty\n");
+
+    return;
+
+  }
+
+  printf("Linked list: \n");
+
+  while(temp != NULL){
+
+    printf("[%d] %s \n",i, temp->str);
+
+    temp = temp->next;
+
+    i++;
+
+  }
+
+  void free_history(List *list){
+
+    Item *temp = list->root;
+
+    while(list != NULL){
+
+      temp = temp ->next;
+      free(temp);
+    }
+    free(list);
+  }
+}
+
